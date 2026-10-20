@@ -10,6 +10,13 @@ Pages.sobre = () => {
             h('h1', { tabindex: -1 }, 'Sobre o Atlas'),
             h('p', { class: 'lead' }, 'Um projeto educacional que consome a PokéAPI para mostrar como uma página dinâmica conversa com uma API pública.'),
 
+            h('h2', {}, 'Páginas do site'),
+            h('ul', {},
+                h('li', {}, h('a', { href: '#home' }, 'Início'), ' — vitrine com o Pokémon do dia, faixa de tipos e atalhos;'),
+                h('li', {}, h('a', { href: '#pokedex' }, 'Pokédex'), ' — todas as espécies, com busca, filtro por tipo e favoritos;'),
+                h('li', {}, 'Detalhe — a página de cada Pokémon, aberta pelos cartões;'),
+                h('li', {}, 'Sobre — esta página.')),
+
             h('h2', {}, 'Como funciona'),
             h('p', {}, 'Todos os dados são buscados no seu navegador, em tempo real, em ',
                 h('a', { href: 'https://pokeapi.co/', target: '_blank', rel: 'noopener noreferrer' }, 'pokeapi.co'), '. Os endpoints usados são:'),

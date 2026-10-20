@@ -14,16 +14,17 @@ O layout segue o rascunho de três telas em [`docs/esboco-wireframe.png`](docs/e
 
 | Tela do esboço | Página | O que mostra |
 | --- | --- | --- |
-| 1 — quatro cartões grandes | `#home` | Hero com busca, números da API e cartões: Pokédex, Tipos, Aleatório, Favoritos |
-| 2 — grade de ícones (3 × 4) | `#pokedex` | 12 Pokémon por página, busca por nome/número, filtro por tipo e paginação |
+| 1 — quatro cartões grandes | `#home` | Vitrine em duas colunas com o **Pokémon do dia**, faixa de tipos e 4 cartões 2 × 2 (Pokédex, Aleatório, Favoritos, Sobre) |
+| 2 — grade de ícones (3 × 4) | `#pokedex` | 12 Pokémon por página, busca por nome/número, barra de tipos, filtro de favoritos e paginação |
 | 3 — imagem + texto + 3 ícones | `#pokemon/25` | Arte oficial, tipos, texto da Pokédex, altura, peso, habilidades, atributos e linha evolutiva |
+| — | `#sobre` | Projeto, API, esboço, acessibilidade e aviso de direitos |
 
-Páginas extras: `#tipos`, `#favoritos` (salvos no navegador) e `#sobre`.
+São **4 páginas**. Os links antigos `#tipos` e `#favoritos` levam à Pokédex já filtrada, e `#aleatorio` sorteia um Pokémon.
 
 ## Inspiração
 
-- **Pottermore**: tipografia com serifa, detalhes dourados e o texto da Pokédex em um "pergaminho".
-- **Site de Genshin Impact**: tema escuro e cartões de personagem com brilho na cor do tipo (como os elementos).
+- **Pottermore**: tipografia com serifa, detalhes dourados, o texto da Pokédex em um "pergaminho" e o conteúdo do dia.
+- **Site de Genshin Impact**: tema escuro, vitrine com o personagem em destaque, cartões com brilho na cor do tipo e barra de tipos como as abas de elementos.
 
 ## API
 
@@ -65,7 +66,7 @@ style.css           tema
 app.js              roteador por hash
 js/api.js           cliente da PokéAPI
 js/ui.js            helpers de DOM, tipos em português e favoritos
-js/pages/*.js       uma página por arquivo
+js/pages/*.js       uma página por arquivo (home, pokedex, detalhe, sobre)
 assets/             logo e favicon (originais)
 docs/               esboço do projeto
 ```
