@@ -142,7 +142,7 @@ Pages.pokemon = (ctx) => {
                             'aria-current': member.id === currentId ? 'page' : null
                         },
                         h('img', { src: PokeAPI.artwork(member.id), alt: '', width: 96, height: 96, loading: 'lazy', decoding: 'async' }),
-                        h('span', { class: 'dex-name' }, formatName(member.name))))))))
+                        h('span', { class: 'dex-name' }, formatName(member.name)))))))))
 
             target.replaceChildren(list)
         } catch (error) {
