@@ -1,0 +1,303 @@
+/* Define cores, tipografia e medidas reutilizadas pelo site. */
+:root {
+    font-family: "Segoe UI", Arial, sans-serif;
+    color: #17233c;
+    background: #eef2f8;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    --navy: #15284b;
+    --blue: #2864c5;
+    --muted: #66738a;
+    --border: #dce3ee;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    background:
+        radial-gradient(ellipse at 12% 10%, #dce9ff 0, transparent 35%),
+        radial-gradient(ellipse at 90% 85%, #e2e8f4 0, transparent 32%),
+        #f5f7fb;
+}
+
+/* Mantém a navegação visível e destaca a seção atual. */
+nav {
+    position: sticky;
+    z-index: 1;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    min-height: 68px;
+    padding: 12px 20px;
+    background: rgb(255 255 255 / 88%);
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(12px);
+}
+
+nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+nav a {
+    display: block;
+    padding: 10px 16px;
+    border-radius: 10px;
+    color: var(--navy);
+    font-size: 15px;
+    font-weight: 650;
+    text-decoration: none;
+    transition: color 160ms ease, background-color 160ms ease, transform 160ms ease;
+}
+
+nav a:hover {
+    color: var(--blue);
+    background: #edf3ff;
+    transform: translateY(-1px);
+}
+
+nav a.active {
+    color: #fff;
+    background: var(--navy);
+}
+
+/* Centraliza o cartão e anima a troca de seções sem recarregar a página. */
+#root {
+    display: grid;
+    flex: 1;
+    place-items: center;
+    width: 100%;
+    padding: 48px 20px;
+}
+
+.content-card {
+    width: min(100%, 720px);
+    padding: clamp(28px, 6vw, 56px);
+    border: 1px solid rgb(220 227 238 / 90%);
+    border-radius: 22px;
+    background: #fff;
+    box-shadow: 0 24px 70px rgb(28 47 82 / 12%);
+    animation: card-enter 260ms ease both;
+}
+
+@keyframes card-enter {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.content-card h1 {
+    margin: 0 0 16px;
+    color: var(--navy);
+    font-size: clamp(30px, 5vw, 42px);
+    line-height: 1.15;
+    letter-spacing: -0.04em;
+}
+
+.content-card h2 {
+    margin: 0 0 16px;
+    color: #304363;
+    font-size: clamp(19px, 3vw, 24px);
+    line-height: 1.35;
+}
+
+.content-card p {
+    color: var(--muted);
+    font-size: 16px;
+    line-height: 1.75;
+}
+
+.eyebrow {
+    margin: 0 0 12px;
+    color: var(--blue) !important;
+    font-size: 13px !important;
+    font-weight: 750;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.button-link,
+.content-card button {
+    display: inline-flex;
+    min-height: 46px;
+    align-items: center;
+    justify-content: center;
+    padding: 0 20px;
+    border: 0;
+    border-radius: 10px;
+    background: var(--blue);
+    color: #fff;
+    font: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 160ms ease, transform 160ms ease;
+}
+
+.button-link:hover,
+.content-card button:hover {
+    background: #1e50a3;
+    transform: translateY(-1px);
+}
+
+/* Exibe as opções de curso em cartões quadrados e responsivos. */
+.course-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 14px;
+    margin: 24px 0 30px;
+    padding: 0;
+    list-style: none;
+}
+
+.course-tile {
+    display: grid;
+    min-height: 140px;
+    place-items: center;
+    padding: 18px;
+    border: 1px solid #dce7fa;
+    border-radius: 14px;
+    background: linear-gradient(145deg, #f6f9ff, #edf3ff);
+    color: var(--navy);
+    font-size: 17px;
+    font-weight: 700;
+    text-align: center;
+    transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+.course-tile:hover {
+    transform: translateY(-3px);
+    border-color: #aac5f2;
+    box-shadow: 0 12px 24px rgb(40 100 197 / 10%);
+}
+
+/* Padroniza campos para dar ao formulário uma aparência de cartão. */
+.inline-form,
+.contact-form {
+    display: grid;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.inline-form label {
+    color: var(--navy);
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.inline-form input,
+.contact-form input,
+.contact-form textarea {
+    width: 100%;
+    min-height: 48px;
+    padding: 12px 14px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    outline: none;
+    background: #fbfcfe;
+    color: #17233c;
+    font: inherit;
+    font-size: 15px;
+    transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.contact-form textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.inline-form input:focus,
+.contact-form input:focus,
+.contact-form textarea:focus {
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px rgb(40 100 197 / 14%);
+}
+
+.inline-form button,
+.contact-form button {
+    justify-self: start;
+}
+
+.form-note {
+    margin: 0;
+    font-size: 13px !important;
+}
+
+.contact-details {
+    margin: 22px 0;
+    padding: 18px 20px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: #f8faff;
+}
+
+.contact-details p {
+    margin: 6px 0;
+    font-size: 14px;
+}
+
+.contact-details a {
+    color: var(--blue);
+    font-weight: 650;
+}
+
+@media (max-width: 520px) {
+    nav {
+        padding-inline: 10px;
+    }
+
+    nav ul {
+        gap: 2px;
+    }
+
+    nav a {
+        padding: 9px 11px;
+        font-size: 14px;
+    }
+
+    #root {
+        padding: 26px 14px;
+    }
+
+    .content-card {
+        border-radius: 16px;
+    }
+
+    .course-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .course-tile {
+        min-height: 120px;
+        padding: 12px;
+        font-size: 15px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}
