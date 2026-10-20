@@ -106,7 +106,7 @@ Pages.pokemon = (ctx) => {
             loadEvolution(species, pokemon.id, evolution)
         } catch (error) {
             if (!ctx.isCurrent()) return
-            console.error(error)
+            if (error.status !== 404) console.error(error)
             if (error.status === 404) {
                 title.textContent = 'Pokémon não encontrado'
                 ctx.setTitle('Pokémon não encontrado')
