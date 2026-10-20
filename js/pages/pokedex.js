@@ -72,9 +72,15 @@ Pages.pokedex = (ctx) => {
             }
 
             if (termo) {
-                const byName = termo.replace(/^#/, '').replace(/\s+/g, '-')
-                const byNumber = termo.replace(/^#/, '').replace(/^0+(?=\d)/, '')
-                items = items.filter((item) => item.name.includes(byName) || String(item.id) === byNumber)
+                const clean = termo.replace(/^#/, '')
+                if (/^\d+$/.test(clean)) {
+                    // Só números: compara com o número da Pokédex (ignora zeros à esquerda).
+                    const number = String(Number(clean))
+                    items = items.filter((item) => String(item.id) === number)
+                } else {
+                    const byName = clean.replace(/\s+/g, '-')
+                    items = items.filter((item) => item.name.includes(byName))
+                }
             }
 
             if (!ctx.isCurrent()) return
