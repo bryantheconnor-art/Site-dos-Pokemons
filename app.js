@@ -10,8 +10,13 @@ const SITE_NAME = 'Atlas Pokémon'
 let renderToken = 0
 let firstRender = true
 
-// Nomes antigos do projeto base continuam funcionando.
-const ALIASES = { about: 'sobre', contato: 'sobre' }
+// O site tem 4 páginas (início, Pokédex, detalhe e sobre). Links antigos continuam funcionando.
+const ALIASES = {
+    about: { name: 'sobre' },
+    contato: { name: 'sobre' },
+    tipos: { name: 'pokedex' },
+    favoritos: { name: 'pokedex', params: { favoritos: '1' } }
+}
 
 function safeDecode(value) {
     try { return decodeURIComponent(value) } catch (error) { return value }
@@ -21,8 +26,10 @@ function parseHash() {
     const raw = window.location.hash.replace(/^#\/?/, '')
     const [path, query = ''] = raw.split('?')
     const [first = 'home', ...args] = path.split('/').filter(Boolean)
-    const name = ALIASES[first] || first
-    return { name, args: args.map(safeDecode), params: new URLSearchParams(query) }
+    const alias = ALIASES[first]
+    const params = new URLSearchParams(query)
+    if (alias && alias.params) Object.entries(alias.params).forEach(([key, value]) => params.set(key, value))
+    return { name: alias ? alias.name : first, args: args.map(safeDecode), params }
 }
 
 // Avisa leitores de tela sem mudar o foco.

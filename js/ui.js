@@ -107,7 +107,7 @@ const UI = (() => {
                 types.length > 0 && h('span', { class: 'sr-only' }, `Tipo: ${types.map(typeLabel).join(', ')}`)))
     }
 
-    return { h, capitalize, formatName, formatNumber, typeColor, typeLabel, typeChip, loading, errorBox, FRIENDLY_ERROR, artworkOf, pokemonCard }
+    return { h, capitalize, formatName, formatNumber, typeColor, typeLabel, readableTextOn, typeChip, loading, errorBox, FRIENDLY_ERROR, artworkOf, pokemonCard }
 })()
 
 // Favoritos guardados no navegador (com cópia em memória se o armazenamento falhar).
