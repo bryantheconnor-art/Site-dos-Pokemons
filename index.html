@@ -1,21 +1,53 @@
 <!DOCTYPE html> <!-- Informa ao navegador que este documento usa HTML5. -->
-<html lang="pt-br"> <!-- Define o idioma principal da página como português do Brasil. -->
+<html lang="pt-br"> <!-- Idioma principal da página: português do Brasil. -->
 <head>
-    <meta charset="UTF-8"> <!-- Permite exibir corretamente acentos e outros caracteres. -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Ajusta a largura da página para dispositivos móveis. -->
-    <link rel="stylesheet" href="style.css"> <!-- Carrega os estilos definidos no arquivo CSS. -->
-    <script src="./app.js" defer></script> <!-- Carrega o JavaScript após o HTML ser interpretado. -->
-    <title>Meu site protótipo</title> <!-- Define o título mostrado na aba do navegador. -->
+    <meta charset="UTF-8"> <!-- Exibe corretamente acentos e outros caracteres. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Ajusta a página para dispositivos móveis. -->
+    <meta name="description" content="Atlas Pokémon: enciclopédia interativa com dados em tempo real da PokéAPI. Projeto de fã, sem fins lucrativos.">
+    <meta name="theme-color" content="#0c0e22">
+    <title>Atlas Pokémon</title> <!-- Título inicial; o JavaScript atualiza a cada página. -->
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&amp;family=Nunito:wght@400;700;800&amp;display=swap"> <!-- Se a fonte não carregar, o CSS usa fontes do sistema. -->
+    <link rel="stylesheet" href="style.css"> <!-- Estilos do site. -->
+    <script src="js/api.js" defer></script> <!-- Cliente da PokéAPI. -->
+    <script src="js/ui.js" defer></script> <!-- Helpers de interface, tipos e favoritos. -->
+    <script src="app.js" defer></script> <!-- Roteador: troca as páginas sem recarregar. -->
 </head>
 <body>
-    <nav> <!-- Cria a área de navegação do site. -->
-    <ul>
-        <li><a href="#home">Home</a></li> <!-- Mostra a página inicial sem carregar outro arquivo HTML. -->
-        <li><a href="#about">About</a></li> <!-- Mostra a página sobre criada pelo JavaScript. -->
-        <li><a href="#contato">Contato</a></li> <!-- Mostra os contatos da FATEC criados pelo JavaScript. -->
-        <li><a href="#cursos">Cursos</a></li> <!-- Mostra os cursos criados pelo JavaScript. -->
-    </ul>
-</nav>
-<main id="root"></main> <!-- Área principal preenchida pelo JavaScript. -->
+    <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
+    <header class="site-header"> <!-- Esboço: logo + título no topo. -->
+        <a class="brand" href="#home">
+            <img src="assets/logo.svg" alt="" width="44" height="44">
+            <span class="brand-text">
+                <span class="brand-name">Atlas Pokémon</span>
+                <span class="brand-tag">Dados ao vivo da PokéAPI</span>
+            </span>
+        </a>
+        <nav aria-label="Principal">
+            <ul>
+                <li><a href="#home">Início</a></li>
+                <li><a href="#pokedex">Pokédex</a></li>
+                <li><a href="#tipos">Tipos</a></li>
+                <li><a href="#favoritos">Favoritos</a></li>
+                <li><a href="#sobre">Sobre</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main id="conteudo" tabindex="-1"></main> <!-- Área principal preenchida pelo JavaScript. -->
+
+    <div id="anuncio" class="sr-only" role="status" aria-live="polite"></div> <!-- Avisos para leitores de tela. -->
+
+    <footer class="site-footer">
+        <p>Pokémon e os nomes dos personagens são marcas registradas da Nintendo, Creatures Inc. e GAME FREAK inc. © Nintendo. Todos os direitos reservados.</p>
+        <p>Este é um projeto educacional de fã, sem fins lucrativos e sem vínculo oficial com a Nintendo. Dados e imagens fornecidos pela <a href="https://pokeapi.co/" target="_blank" rel="noopener noreferrer">PokéAPI<span class="sr-only"> (abre em nova aba)</span></a>.</p>
+    </footer>
+
+    <noscript>
+        <p style="padding:16px;text-align:center">Este site precisa de JavaScript para consultar a PokéAPI.</p>
+    </noscript>
 </body>
 </html>
