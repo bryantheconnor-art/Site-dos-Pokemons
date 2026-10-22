@@ -246,10 +246,14 @@ label { color: var(--muted); font-size: 14px; font-weight: 700; }
 .feature-card:hover { transform: translateY(-4px); border-color: var(--tc); box-shadow: 0 18px 40px rgb(0 0 0 / 40%), 0 0 0 1px var(--tc); }
 .feature-card:hover img { transform: scale(1.06) translateY(-4px); }
 
-/* Pokédex: grade 3 colunas × 4 linhas (esboço) */
-.filters { display: flex; flex-wrap: wrap; align-items: end; gap: 12px 16px; margin: 18px 0 8px; }
+/* Pokédex: grade 3 colunas × 4 linhas (esboço). Os filtros ficam num bloco recolhível. */
+.filtros { margin: 8px 0 4px; border: 1px solid var(--line); border-radius: 16px; background: rgb(26 30 69 / 60%); }
+.filtros summary { padding: 12px 18px; color: var(--gold); font-weight: 800; cursor: pointer; }
+.filters { display: flex; flex-wrap: wrap; align-items: end; gap: 12px 16px; padding: 4px 18px 18px; }
 .filters div { display: grid; gap: 4px; }
-.filters input { width: min(100%, 260px); }
+.filters input[type="search"] { width: min(100%, 220px); }
+.check { display: flex; min-height: 46px; align-items: center; gap: 8px; color: var(--text); }
+.check input { width: 20px; min-height: 20px; height: 20px; accent-color: var(--gold); }
 .summary { min-height: 1.6em; margin: 14px 0; color: var(--muted); }
 
 .dex-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin: 0; padding: 0; list-style: none; }
@@ -279,26 +283,6 @@ label { color: var(--muted); font-size: 14px; font-weight: 700; }
 
 .pager { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px 14px; margin-top: 28px; }
 .pager .btn { min-height: 42px; padding: 0 16px; }
-
-/* Barra de tipos da Pokédex (inspirada nas abas de elementos do Genshin Impact) */
-.type-bar ul { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 0; padding: 0; list-style: none; }
-.type-pill {
-    display: inline-flex;
-    min-height: 40px;
-    align-items: center;
-    gap: 8px;
-    padding: 0 16px;
-    border: 2px solid var(--chip, var(--gold));
-    border-radius: 999px;
-    color: var(--text);
-    font-size: 14px;
-    font-weight: 800;
-    text-decoration: none;
-    transition: background-color 160ms ease, transform 160ms ease;
-}
-.type-pill:hover { background: color-mix(in srgb, var(--chip, var(--gold)) 28%, transparent); transform: translateY(-1px); }
-.type-pill[aria-current="true"] { background: var(--chip, var(--gold)); color: var(--chip-text, #1b1530); }
-.type-pill:not([style])[aria-current="true"] { color: #1b1530; }
 
 .type-chip {
     display: inline-block;

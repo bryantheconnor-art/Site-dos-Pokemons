@@ -1,137 +1,176 @@
 'use strict'
 
-// Pokédex: grade 3 × 4 (esboço da tela 2) com busca, barra de tipos (como os elementos do Genshin),
-// filtro de favoritos e paginação. Também atende os antigos links #tipos e #favoritos.
+/* ============================================================
+   pokedex.js — lista de Pokémon (tela 2 do esboço)
+   Autor: bryantheconnor-art
+   ------------------------------------------------------------
+   Mostra 12 Pokémon por vez numa grade de 3 colunas × 4 linhas.
+   Os filtros ficam dentro de um bloco recolhível para a tela
+   continuar limpa como no desenho:
+     - busca por nome ou número;
+     - tipo (Fogo, Água...);
+     - região (Kanto, Johto...) -> usa o endpoint /generation da API;
+     - só favoritos.
+   Também atende os endereços antigos #tipos e #favoritos.
+   ============================================================ */
 Pages.pokedex = (ctx) => {
-    const { h, typeLabel, typeColor, formatName } = UI
-    const PAGE_SIZE = 12
+    const { h, typeLabel, formatName } = UI
+    const POR_PAGINA = 12 // 3 colunas × 4 linhas
 
+    // Lê os filtros do endereço (#pokedex?tipo=fire&geracao=1&pagina=2).
     const termo = (ctx.params.get('busca') || '').trim().toLowerCase()
     const tipo = TYPE_INFO[ctx.params.get('tipo')] ? ctx.params.get('tipo') : ''
+    const geracao = Object.keys(GERACOES)[Number(ctx.params.get('geracao')) - 1] ? Number(ctx.params.get('geracao')) : 0
     const somenteFavoritos = ctx.params.get('favoritos') === '1'
     const pagina = Math.max(1, parseInt(ctx.params.get('pagina'), 10) || 1)
+    const filtrando = Boolean(termo || tipo || geracao || somenteFavoritos)
 
-    // Monta o hash a partir dos filtros atuais, permitindo trocar partes deles.
-    function hrefFor({ busca = termo, tipo: novoTipo = tipo, favoritos = somenteFavoritos, page = 1 } = {}) {
+    // Monta o endereço com os filtros atuais; quem chama pode trocar só uma parte.
+    function hrefFor({ page = 1 } = {}) {
         const params = new URLSearchParams()
-        if (busca) params.set('busca', busca)
-        if (novoTipo) params.set('tipo', novoTipo)
-        if (favoritos) params.set('favoritos', '1')
+        if (termo) params.set('busca', termo)
+        if (tipo) params.set('tipo', tipo)
+        if (geracao) params.set('geracao', geracao)
+        if (somenteFavoritos) params.set('favoritos', '1')
         if (page > 1) params.set('pagina', page)
-        const query = params.toString()
-        return `#pokedex${query ? `?${query}` : ''}`
+        const consulta = params.toString()
+        return `#pokedex${consulta ? `?${consulta}` : ''}`
     }
 
-    const form = h('form', {
+    // Formulário de filtros. Ao enviar, vira um novo endereço (e o roteador monta a página de novo).
+    const formulario = h('form', {
         class: 'filters',
         role: 'search',
-        onsubmit: (event) => {
-            event.preventDefault()
-            const target = hrefFor({ busca: new FormData(event.currentTarget).get('busca').trim().toLowerCase() })
-            if (window.location.hash === target) ctx.refresh()
-            else window.location.hash = target
+        onsubmit: (evento) => {
+            evento.preventDefault()
+            const dados = new FormData(evento.currentTarget)
+            const params = new URLSearchParams()
+            if (dados.get('busca').trim()) params.set('busca', dados.get('busca').trim().toLowerCase())
+            if (dados.get('tipo')) params.set('tipo', dados.get('tipo'))
+            if (dados.get('geracao')) params.set('geracao', dados.get('geracao'))
+            if (dados.get('favoritos')) params.set('favoritos', '1')
+            const destino = `#pokedex${params.toString() ? `?${params}` : ''}`
+            if (window.location.hash === destino) ctx.refresh()
+            else window.location.hash = destino
         }
     },
         h('div', {},
-            h('label', { for: 'filtro-busca' }, 'Buscar por nome ou número'),
+            h('label', { for: 'filtro-busca' }, 'Nome ou número'),
             h('input', { id: 'filtro-busca', name: 'busca', type: 'search', value: termo, placeholder: 'Ex.: char ou 6', autocomplete: 'off' })),
-        h('button', { class: 'btn', type: 'submit' }, 'Buscar'),
-        (termo || tipo || somenteFavoritos) && h('a', { class: 'btn btn-ghost', href: '#pokedex' }, 'Limpar filtros'))
+        h('div', {},
+            h('label', { for: 'filtro-tipo' }, 'Tipo'),
+            h('select', { id: 'filtro-tipo', name: 'tipo' },
+                h('option', { value: '' }, 'Todos os tipos'),
+                Object.keys(TYPE_INFO).map((chave) => h('option', { value: chave, selected: chave === tipo }, typeLabel(chave))))),
+        h('div', {},
+            h('label', { for: 'filtro-regiao' }, 'Região'),
+            h('select', { id: 'filtro-regiao', name: 'geracao' },
+                h('option', { value: '' }, 'Todas as regiões'),
+                Object.values(GERACOES).map(([romano, regiao], indice) =>
+                    h('option', { value: indice + 1, selected: indice + 1 === geracao }, `${regiao} (geração ${romano})`)))),
+        h('label', { class: 'check', for: 'filtro-fav' },
+            h('input', { id: 'filtro-fav', name: 'favoritos', type: 'checkbox', value: '1', checked: somenteFavoritos }),
+            'Só favoritos'),
+        h('button', { class: 'btn', type: 'submit' }, 'Aplicar'),
+        filtrando && h('a', { class: 'btn btn-ghost', href: '#pokedex' }, 'Limpar'))
 
-    // Barra de tipos: links, então funcionam com teclado e leitores de tela; aria-current marca o ativo.
-    const pill = (label, href, active, color) => h('li', {},
-        h('a', {
-            class: 'type-pill', href, 'aria-current': active ? 'true' : null,
-            vars: color ? { '--chip': color, '--chip-text': UI.readableTextOn(color) } : {}
-        }, label))
+    // <details> abre e fecha sozinho (nativo, acessível). Fica aberto quando já há filtro.
+    const blocoFiltros = h('details', { class: 'filtros', open: filtrando },
+        h('summary', {}, filtrando ? 'Filtros ativos' : 'Buscar e filtrar'),
+        formulario)
 
-    const typeBar = h('nav', { class: 'type-bar', 'aria-label': 'Filtrar por tipo' },
-        h('ul', {},
-            pill('Todos', hrefFor({ tipo: '', favoritos: false }), !tipo && !somenteFavoritos),
-            Object.keys(TYPE_INFO).map((key) => pill(typeLabel(key), hrefFor({ tipo: key, favoritos: false }), tipo === key, typeColor(key))),
-            pill('★ Favoritos', hrefFor({ tipo: '', favoritos: true }), somenteFavoritos)))
+    const resumo = h('p', { class: 'summary', role: 'status' })
+    const resultado = h('div', { class: 'dex-result' })
 
-    const summary = h('p', { class: 'summary', role: 'status' })
-    const result = h('div', { class: 'dex-result' })
-
-    function pager(current, total) {
-        const link = (label, target, disabled) => disabled
-            ? h('span', { class: 'btn btn-ghost', 'aria-disabled': 'true' }, label)
-            : h('a', { class: 'btn btn-ghost', href: hrefFor({ page: target }) }, label)
+    // Botões de paginação. O "desativado" é um <span> para não virar link.
+    function paginacao(atual, total) {
+        const botao = (texto, destino, desativado) => desativado
+            ? h('span', { class: 'btn btn-ghost', 'aria-disabled': 'true' }, texto)
+            : h('a', { class: 'btn btn-ghost', href: hrefFor({ page: destino }) }, texto)
         return h('nav', { class: 'pager', 'aria-label': 'Paginação da Pokédex' },
-            link('« Primeira', 1, current === 1),
-            link('‹ Anterior', current - 1, current === 1),
-            h('span', {}, `Página ${current} de ${total}`),
-            link('Próxima ›', current + 1, current === total),
-            link('Última »', total, current === total))
+            botao('« Primeira', 1, atual === 1),
+            botao('‹ Anterior', atual - 1, atual === 1),
+            h('span', {}, `Página ${atual} de ${total}`),
+            botao('Próxima ›', atual + 1, atual === total),
+            botao('Última »', total, atual === total))
     }
 
-    async function load() {
-        result.replaceChildren(UI.loading('Carregando Pokémon…'))
-        summary.textContent = ''
+    // Busca os dados na API, aplica os filtros e desenha a grade.
+    async function carregar() {
+        resultado.replaceChildren(UI.loading('Carregando Pokémon…'))
+        resumo.textContent = ''
 
         try {
-            let items = await PokeAPI.allNames()
+            let itens = await PokeAPI.allNames() // [{ id, name }] de todas as espécies
 
+            // Cada filtro apenas "poda" a lista, na ordem: favoritos -> tipo -> região -> texto.
             if (somenteFavoritos) {
-                const favorites = new Set(Favorites.list())
-                items = items.filter((item) => favorites.has(item.id))
+                const favoritos = new Set(Favorites.list())
+                itens = itens.filter((item) => favoritos.has(item.id))
             }
-
             if (tipo) {
-                const ids = new Set((await PokeAPI.typeMembers(tipo)).map((member) => member.id))
-                items = items.filter((item) => ids.has(item.id))
+                const ids = new Set((await PokeAPI.typeMembers(tipo)).map((membro) => membro.id))
+                itens = itens.filter((item) => ids.has(item.id))
             }
-
+            if (geracao) {
+                const ids = new Set((await PokeAPI.generationMembers(geracao)).map((membro) => membro.id))
+                itens = itens.filter((item) => ids.has(item.id))
+            }
             if (termo) {
-                const clean = termo.replace(/^#/, '')
-                if (/^\d+$/.test(clean)) {
+                const limpo = termo.replace(/^#/, '')
+                if (/^\d+$/.test(limpo)) {
                     // Só números: compara com o número da Pokédex (ignora zeros à esquerda).
-                    const number = String(Number(clean))
-                    items = items.filter((item) => String(item.id) === number)
+                    const numero = String(Number(limpo))
+                    itens = itens.filter((item) => String(item.id) === numero)
                 } else {
-                    const byName = clean.replace(/\s+/g, '-')
-                    items = items.filter((item) => item.name.includes(byName))
+                    const nome = limpo.replace(/\s+/g, '-')
+                    itens = itens.filter((item) => item.name.includes(nome))
                 }
             }
 
-            if (!ctx.isCurrent()) return
+            if (!ctx.isCurrent()) return // o usuário já mudou de página
 
-            if (items.length === 0) {
-                summary.textContent = 'Nenhum resultado.'
-                result.replaceChildren(somenteFavoritos && !termo
+            if (itens.length === 0) {
+                resumo.textContent = 'Nenhum resultado.'
+                resultado.replaceChildren(somenteFavoritos && !termo && !tipo && !geracao
                     ? h('p', {}, 'Você ainda não favoritou nenhum Pokémon. Abra a página de um Pokémon e use o botão “Favorito”.')
-                    : h('p', {}, 'Nenhum Pokémon encontrado. Tente outro nome, número ou tipo.'))
+                    : h('p', {}, 'Nenhum Pokémon encontrado. Tente outro nome, número, tipo ou região.'))
                 return
             }
 
-            const totalPages = Math.ceil(items.length / PAGE_SIZE)
-            const current = Math.min(pagina, totalPages)
-            const slice = items.slice((current - 1) * PAGE_SIZE, current * PAGE_SIZE)
+            const totalPaginas = Math.ceil(itens.length / POR_PAGINA)
+            const atual = Math.min(pagina, totalPaginas)
+            const fatia = itens.slice((atual - 1) * POR_PAGINA, atual * POR_PAGINA)
 
-            const settled = await Promise.allSettled(slice.map((item) => PokeAPI.pokemon(item.id)))
+            // Pede os 12 Pokémon da página ao mesmo tempo (muito mais rápido do que um por vez).
+            const respostas = await Promise.allSettled(fatia.map((item) => PokeAPI.pokemon(item.id)))
             if (!ctx.isCurrent()) return
 
-            // Se um Pokémon falhar, o cartão aparece sem imagem em vez de quebrar a página.
-            const cards = settled.map((entry, index) =>
-                UI.pokemonCard(entry.status === 'fulfilled' ? entry.value : { id: slice[index].id, name: slice[index].name, types: [] }))
+            // Se algum falhar, o cartão aparece sem imagem em vez de quebrar a página toda.
+            const cartoes = respostas.map((resposta, indice) =>
+                UI.pokemonCard(resposta.status === 'fulfilled' ? resposta.value : { id: fatia[indice].id, name: fatia[indice].name, types: [] }))
 
-            const filtroTexto = somenteFavoritos ? ' favoritos' : tipo ? ` do tipo ${typeLabel(tipo)}` : ''
-            summary.textContent = `${items.length} Pokémon${filtroTexto} · página ${current} de ${totalPages}`
-            result.replaceChildren(h('ul', { class: 'dex-grid' }, cards), totalPages > 1 && pager(current, totalPages))
-        } catch (error) {
-            console.error(error)
-            if (ctx.isCurrent()) result.replaceChildren(UI.errorBox(UI.FRIENDLY_ERROR, ctx.refresh))
+            const partes = []
+            if (somenteFavoritos) partes.push('favoritos')
+            if (tipo) partes.push(`tipo ${typeLabel(tipo)}`)
+            if (geracao) partes.push(`região ${GERACOES[Object.keys(GERACOES)[geracao - 1]][1]}`)
+            resumo.textContent = `${itens.length} Pokémon${partes.length ? ` · ${partes.join(' · ')}` : ''} · página ${atual} de ${totalPaginas}`
+            resultado.replaceChildren(h('ul', { class: 'dex-grid' }, cartoes), totalPaginas > 1 && paginacao(atual, totalPaginas))
+        } catch (erro) {
+            console.error(erro)
+            if (ctx.isCurrent()) resultado.replaceChildren(UI.errorBox(UI.FRIENDLY_ERROR, ctx.refresh))
         }
     }
 
-    load()
+    carregar()
 
+    const tituloAba = somenteFavoritos ? 'Pokédex · Favoritos' : tipo ? `Pokédex · ${typeLabel(tipo)}` : 'Pokédex'
     return {
-        title: somenteFavoritos ? 'Pokédex · Favoritos' : tipo ? `Pokédex · ${typeLabel(tipo)}` : 'Pokédex',
+        title: tituloAba,
         node: h('article', { class: 'page' },
             h('h1', { tabindex: -1 }, 'Pokédex'),
-            h('p', { class: 'lead' }, 'Doze criaturas por página. Busque pelo nome, escolha um tipo ou veja seus favoritos.'),
-            form, typeBar, summary, result)
+            blocoFiltros,
+            resumo,
+            resultado)
     }
 }
