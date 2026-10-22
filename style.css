@@ -382,6 +382,7 @@ code { padding: 1px 6px; border-radius: 6px; background: rgb(255 255 255 / 10%);
 /* Rodapé com aviso de direitos */
 .site-footer { padding: 28px clamp(16px, 4vw, 40px) 36px; border-top: 1px solid var(--line); background: rgb(8 9 24 / 85%); color: var(--muted); font-size: 14px; text-align: center; }
 .site-footer p { max-width: 80ch; margin: 0 auto 8px; }
+.site-footer .autoria { color: var(--text); font-weight: 700; }
 
 @media (max-width: 760px) {
     .detail-grid, .detail-more { grid-template-columns: 1fr; }
