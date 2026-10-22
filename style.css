@@ -197,7 +197,7 @@ label { color: var(--muted); font-size: 14px; font-weight: 700; }
 .banner-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 8px; }
 
 /* A montagem: cada imagem usa variáveis (--x, --y, --s, --z, --d) definidas pelo JavaScript. */
-.banner-art { position: relative; aspect-ratio: 16 / 6.4; margin-top: 12px; }
+.banner-art { position: relative; aspect-ratio: 16 / 7.4; margin-top: 12px; }
 .banner-art::before { /* "chão" escuro sob os Pokémon */
     content: "";
     position: absolute;
