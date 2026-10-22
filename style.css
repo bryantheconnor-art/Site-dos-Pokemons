@@ -253,7 +253,7 @@ label { color: var(--muted); font-size: 14px; font-weight: 700; }
 .filters div { display: grid; gap: 4px; }
 .filters input[type="search"] { width: min(100%, 220px); }
 .check { display: flex; min-height: 46px; align-items: center; gap: 8px; color: var(--text); }
-.check input { width: 20px; min-height: 20px; height: 20px; accent-color: var(--gold); }
+.check input { width: 20px; min-height: 20px; height: 20px; padding: 0; accent-color: var(--gold); }
 .summary { min-height: 1.6em; margin: 14px 0; color: var(--muted); }
 
 .dex-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin: 0; padding: 0; list-style: none; }
@@ -352,6 +352,18 @@ a.type-chip:hover { filter: brightness(1.1); }
 
 .pokemon-nav { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; margin-top: 36px; }
 
+/* Mais detalhes do Pokémon (abaixo da parte do esboço) */
+.detail-more { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 40px; }
+.detail-more h2 { margin-top: 32px; font-size: 22px; }
+.total { margin: 12px 0 0; color: var(--muted); font-weight: 700; }
+.nota { color: var(--muted); font-size: 14px; }
+.efeito { margin-bottom: 14px; }
+.efeito h3 { margin: 0 0 6px; color: var(--muted); font-family: "Nunito", sans-serif; font-size: 14px; letter-spacing: 0.04em; }
+.habilidades { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
+.habilidades li { padding: 12px 14px; border: 1px solid var(--line); border-radius: 12px; background: var(--panel); }
+.habilidades p { margin: 4px 0 0; color: var(--muted); font-size: 15px; }
+.facts-lista { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+
 /* Estados de carregamento e erro */
 .status { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 12px; padding: 40px 16px; color: var(--muted); text-align: center; }
 .status-error { flex-direction: column; border: 1px solid #ff9b9b; border-radius: 16px; background: rgb(255 80 80 / 10%); color: #ffd0d0; }
@@ -372,7 +384,7 @@ code { padding: 1px 6px; border-radius: 6px; background: rgb(255 255 255 / 10%);
 .site-footer p { max-width: 80ch; margin: 0 auto 8px; }
 
 @media (max-width: 760px) {
-    .detail-grid { grid-template-columns: 1fr; }
+    .detail-grid, .detail-more { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 560px) {
