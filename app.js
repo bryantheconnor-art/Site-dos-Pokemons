@@ -1,16 +1,27 @@
 'use strict'
 
-// Roteador: lê o hash da URL (#pokedex?pagina=2, #pokemon/25), monta a página
-// correspondente em <main> e cuida de título, foco e avisos para leitores de tela.
+/* ============================================================
+   app.js — roteador do site (a "central" que troca as páginas)
+   Autor: bryantheconnor-art
+   ------------------------------------------------------------
+   Como funciona: o endereço usa "hash" (a parte depois do #).
+     #home            -> página inicial
+     #pokedex?pagina=2-> lista de Pokémon
+     #pokemon/25      -> detalhe do Pokémon número 25
+     #sobre           -> sobre o projeto
+   Quando o hash muda, renderPage() descobre qual página montar,
+   coloca o resultado dentro de <main> e cuida do título da aba,
+   do foco do teclado e dos avisos para leitores de tela.
+   Como não recarrega a página, o site é rápido (é uma SPA).
+   ============================================================ */
 const main = document.getElementById('conteudo')
 const live = document.getElementById('anuncio')
 const navigationLinks = document.querySelectorAll('.site-header nav a')
-const SITE_NAME = 'Atlas Pokémon'
 
-let renderToken = 0
-let firstRender = true
+let renderToken = 0 // número da renderização atual; serve para ignorar respostas atrasadas da API
+let firstRender = true // na primeira vez não mexemos no foco do teclado
 
-// O site tem 4 páginas (início, Pokédex, detalhe e sobre). Links antigos continuam funcionando.
+// Endereços antigos continuam funcionando e apontam para as 4 páginas atuais.
 const ALIASES = {
     about: { name: 'sobre' },
     contato: { name: 'sobre' },
@@ -18,27 +29,29 @@ const ALIASES = {
     favoritos: { name: 'pokedex', params: { favoritos: '1' } }
 }
 
-function safeDecode(value) {
-    try { return decodeURIComponent(value) } catch (error) { return value }
+function safeDecode(valor) {
+    try { return decodeURIComponent(valor) } catch (erro) { return valor }
 }
 
+// Quebra "#pokedex?tipo=fire&pagina=2" em { name: 'pokedex', args: [], params: {tipo, pagina} }.
 function parseHash() {
-    const raw = window.location.hash.replace(/^#\/?/, '')
-    const [path, query = ''] = raw.split('?')
-    const [first = 'home', ...args] = path.split('/').filter(Boolean)
-    const alias = ALIASES[first]
-    const params = new URLSearchParams(query)
-    if (alias && alias.params) Object.entries(alias.params).forEach(([key, value]) => params.set(key, value))
-    return { name: alias ? alias.name : first, args: args.map(safeDecode), params }
+    const bruto = window.location.hash.replace(/^#\/?/, '')
+    const [caminho, consulta = ''] = bruto.split('?')
+    const [primeiro = 'home', ...args] = caminho.split('/').filter(Boolean)
+    const alias = ALIASES[primeiro]
+    const params = new URLSearchParams(consulta)
+    if (alias && alias.params) Object.entries(alias.params).forEach(([chave, valor]) => params.set(chave, valor))
+    return { name: alias ? alias.name : primeiro, args: args.map(safeDecode), params }
 }
 
-// Avisa leitores de tela sem mudar o foco.
-function announce(message) {
+// Avisa leitores de tela sem mudar o foco do teclado.
+function announce(mensagem) {
     live.textContent = ''
-    window.setTimeout(() => { live.textContent = message }, 50)
+    window.setTimeout(() => { live.textContent = mensagem }, 50)
 }
 
-Pages.notFound = (ctx) => {
+// Página mostrada quando o endereço não existe.
+Pages.notFound = () => {
     const { h } = UI
     return {
         title: 'Página não encontrada',
@@ -49,26 +62,28 @@ Pages.notFound = (ctx) => {
     }
 }
 
+// Monta a página que corresponde ao endereço atual.
 function renderPage() {
     const token = ++renderToken
     const { name, args, params } = parseHash()
     const page = Pages[name] || Pages.notFound
 
+    // "ctx" é o que entregamos para cada página: dados do endereço + utilidades.
     const ctx = {
         name,
         args,
         params,
-        isCurrent: () => token === renderToken,
-        setTitle: (title) => { if (token === renderToken) document.title = `${title} · ${SITE_NAME}` },
-        announce: (message) => { if (token === renderToken) announce(message) },
+        isCurrent: () => token === renderToken, // false = o usuário já foi para outra página
+        setTitle: (titulo) => { if (token === renderToken) document.title = `${titulo} · ${SITE.nome}` },
+        announce: (mensagem) => { if (token === renderToken) announce(mensagem) },
         refresh: renderPage
     }
 
     let view
     try {
         view = page(ctx)
-    } catch (error) {
-        console.error(error)
+    } catch (erro) {
+        console.error(erro)
         view = {
             title: 'Erro',
             node: UI.h('article', { class: 'page' },
@@ -77,31 +92,31 @@ function renderPage() {
         }
     }
 
-    document.title = view.title === SITE_NAME ? SITE_NAME : `${view.title} · ${SITE_NAME}`
+    document.title = view.title === SITE.nome ? SITE.nome : `${view.title} · ${SITE.nome}`
     main.replaceChildren(view.node)
 
-    // O link da seção atual recebe aria-current (o pokémon pertence à Pokédex).
-    const section = name === 'pokemon' ? 'pokedex' : name
+    // Marca no menu a seção atual (o detalhe de um Pokémon pertence à Pokédex).
+    const secao = name === 'pokemon' ? 'pokedex' : name
     navigationLinks.forEach((link) => {
-        if (link.hash === `#${section}`) link.setAttribute('aria-current', 'page')
+        if (link.hash === `#${secao}`) link.setAttribute('aria-current', 'page')
         else link.removeAttribute('aria-current')
     })
 
-    // Em navegações posteriores, volta ao topo e foca o título da nova página.
+    // Depois da primeira página: volta ao topo e coloca o foco no título (ajuda quem usa teclado/leitor de tela).
     if (!firstRender) {
         window.scrollTo(0, 0)
-        const heading = main.querySelector('h1')
-        if (heading) heading.focus({ preventScroll: true })
+        const titulo = main.querySelector('h1')
+        if (titulo) titulo.focus({ preventScroll: true })
     }
     firstRender = false
 }
 
-// O link "pular para o conteúdo" não pode alterar o hash, que é usado pelo roteador.
-document.querySelector('.skip-link').addEventListener('click', (event) => {
-    event.preventDefault()
+// O link "pular para o conteúdo" não pode mudar o hash (o roteador usa o hash), então tratamos o clique.
+document.querySelector('.skip-link').addEventListener('click', (evento) => {
+    evento.preventDefault()
     main.focus()
     main.scrollIntoView()
 })
 
-window.addEventListener('hashchange', renderPage)
-renderPage()
+window.addEventListener('hashchange', renderPage) // roda quando o usuário clica num link interno
+renderPage() // e uma vez ao abrir o site

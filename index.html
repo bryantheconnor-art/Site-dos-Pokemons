@@ -1,35 +1,49 @@
 <!DOCTYPE html> <!-- Informa ao navegador que este documento usa HTML5. -->
+<!--
+    Atlas Pokémon — enciclopédia de Pokémon feita com HTML, CSS e JavaScript puros.
+    Autor: bryantheconnor-art (https://github.com/bryantheconnor-art)
+    Dados: PokéAPI (https://pokeapi.co) e tradução MyMemory (https://mymemory.translated.net)
+    Pokémon © Nintendo, Creatures Inc. e GAME FREAK inc. Projeto de fã, sem fins lucrativos.
+-->
 <html lang="pt-br"> <!-- Idioma principal da página: português do Brasil. -->
 <head>
     <meta charset="UTF-8"> <!-- Exibe corretamente acentos e outros caracteres. -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Ajusta a página para dispositivos móveis. -->
-    <meta name="description" content="Atlas Pokémon: enciclopédia interativa com dados em tempo real da PokéAPI. Projeto de fã, sem fins lucrativos.">
-    <meta name="theme-color" content="#0c0e22">
-    <title>Atlas Pokémon</title> <!-- Título inicial; o JavaScript atualiza a cada página. -->
-    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Ajusta a página para celulares. -->
+    <meta name="author" content="bryantheconnor-art"> <!-- Quem criou o site. -->
+    <meta name="description" content="Atlas Pokémon: enciclopédia interativa com dados em tempo real da PokéAPI. Projeto de fã, sem fins lucrativos."> <!-- Texto que aparece nos buscadores. -->
+    <meta name="theme-color" content="#0c0e22"> <!-- Cor da barra do navegador no celular. -->
+    <title>Atlas Pokémon</title> <!-- Título inicial; o JavaScript troca a cada página. -->
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml"> <!-- Ícone da aba. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com"> <!-- Acelera o carregamento das fontes. -->
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&amp;family=Nunito:wght@400;700;800&amp;display=swap"> <!-- Se a fonte não carregar, o CSS usa fontes do sistema. -->
     <link rel="stylesheet" href="style.css"> <!-- Estilos do site. -->
+
+    <!-- A ORDEM dos scripts importa: cada um usa o que o anterior criou. -->
+    <script src="js/config.js" defer></script> <!-- Nome do site e do autor. -->
     <script src="js/api.js" defer></script> <!-- Cliente da PokéAPI. -->
-    <script src="js/ui.js" defer></script> <!-- Helpers de interface, tipos e favoritos. -->
-    <script src="js/pages/home.js" defer></script>
-    <script src="js/pages/pokedex.js" defer></script>
-    <script src="js/pages/detalhe.js" defer></script>
-    <script src="js/pages/sobre.js" defer></script>
+    <script src="js/traducao.js" defer></script> <!-- Tradução automática para o português. -->
+    <script src="js/ui.js" defer></script> <!-- Ferramentas de interface, tabelas em português e favoritos. -->
+    <script src="js/pages/home.js" defer></script> <!-- Página inicial. -->
+    <script src="js/pages/pokedex.js" defer></script> <!-- Lista de Pokémon. -->
+    <script src="js/pages/detalhe.js" defer></script> <!-- Página de um Pokémon. -->
+    <script src="js/pages/sobre.js" defer></script> <!-- Sobre o projeto. -->
     <script src="app.js" defer></script> <!-- Roteador: troca as páginas sem recarregar. -->
 </head>
 <body>
+    <!-- Atalho para quem navega pelo teclado ou leitor de tela pular o menu. -->
     <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
 
-    <header class="site-header"> <!-- Esboço: logo + título no topo. -->
+    <!-- Cabeçalho comum a todas as páginas (nos três esboços: logo + título no topo). -->
+    <header class="site-header">
         <a class="brand" href="#home">
-            <img src="assets/logo.svg" alt="" width="44" height="44">
+            <img src="assets/logo.svg" alt="" width="44" height="44"> <!-- Logo (bússola). alt vazio: o nome já está escrito ao lado. -->
             <span class="brand-text">
                 <span class="brand-name">Atlas Pokémon</span>
                 <span class="brand-tag">Dados ao vivo da PokéAPI</span>
             </span>
         </a>
+        <!-- Menu principal. O detalhe de cada Pokémon abre pelos cartões da Pokédex. -->
         <nav aria-label="Principal">
             <ul>
                 <li><a href="#home">Início</a></li>
@@ -39,15 +53,20 @@
         </nav>
     </header>
 
-    <main id="conteudo" tabindex="-1"></main> <!-- Área principal preenchida pelo JavaScript. -->
+    <!-- Área principal: o JavaScript (app.js) coloca aqui o conteúdo de cada página. -->
+    <main id="conteudo" tabindex="-1"></main>
 
-    <div id="anuncio" class="sr-only" role="status" aria-live="polite"></div> <!-- Avisos para leitores de tela. -->
+    <!-- Região invisível: avisos para leitores de tela (ex.: "Pikachu adicionado aos favoritos"). -->
+    <div id="anuncio" class="sr-only" role="status" aria-live="polite"></div>
 
+    <!-- Rodapé com autoria e aviso de direitos autorais. -->
     <footer class="site-footer">
+        <p class="autoria">Desenvolvido por <a href="https://github.com/bryantheconnor-art" target="_blank" rel="noopener noreferrer">bryantheconnor-art<span class="sr-only"> (abre em nova aba)</span></a> · <a href="https://github.com/bryantheconnor-art/Site-dos-Pokemons" target="_blank" rel="noopener noreferrer">Código no GitHub<span class="sr-only"> (abre em nova aba)</span></a></p>
         <p>Pokémon e os nomes dos personagens são marcas registradas da Nintendo, Creatures Inc. e GAME FREAK inc. © Nintendo. Todos os direitos reservados.</p>
         <p>Este é um projeto educacional de fã, sem fins lucrativos e sem vínculo oficial com a Nintendo. Dados e imagens fornecidos pela <a href="https://pokeapi.co/" target="_blank" rel="noopener noreferrer">PokéAPI<span class="sr-only"> (abre em nova aba)</span></a>.</p>
     </footer>
 
+    <!-- Se o JavaScript estiver desligado, o site não funciona: avisamos. -->
     <noscript>
         <p style="padding:16px;text-align:center">Este site precisa de JavaScript para consultar a PokéAPI.</p>
     </noscript>
