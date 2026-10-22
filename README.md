@@ -1,10 +1,12 @@
 # Atlas Pokémon
 
-Enciclopédia interativa de Pokémon que consome a [PokéAPI](https://pokeapi.co/) em tempo real.
-Projeto educacional de fã, construído sobre o projeto base (HTML + CSS + JavaScript puro, sem frameworks).
+Enciclopédia interativa de Pokémon, **em português**, que consome a [PokéAPI](https://pokeapi.co/) em tempo real.
+Feita com HTML, CSS e JavaScript puros (sem frameworks), sobre o projeto base das aulas.
+
+**Autor:** [bryantheconnor-art](https://github.com/bryantheconnor-art) · **Repositório:** [Site-dos-Pokemons](https://github.com/bryantheconnor-art/Site-dos-Pokemons)
 
 > Pokémon e os nomes dos personagens são marcas registradas da Nintendo, Creatures Inc. e GAME FREAK inc.
-> © Nintendo. Todos os direitos reservados. Projeto sem fins lucrativos e sem vínculo oficial com a Nintendo.
+> © Nintendo. Todos os direitos reservados. Projeto de fã, sem fins lucrativos e sem vínculo oficial com a Nintendo.
 
 ## Esboço
 
@@ -14,32 +16,38 @@ O layout segue o rascunho de três telas em [`docs/esboco-wireframe.png`](docs/e
 
 | Tela do esboço | Página | O que mostra |
 | --- | --- | --- |
-| 1 — quatro cartões grandes | `#home` | Vitrine em duas colunas com o **Pokémon do dia**, faixa de tipos e 4 cartões 2 × 2 (Pokédex, Aleatório, Favoritos, Sobre) |
-| 2 — grade de ícones (3 × 4) | `#pokedex` | 12 Pokémon por página, busca por nome/número, barra de tipos, filtro de favoritos e paginação |
-| 3 — imagem + texto + 3 ícones | `#pokemon/25` | Arte oficial, tipos, texto da Pokédex, altura, peso, habilidades, atributos e linha evolutiva |
-| — | `#sobre` | Projeto, API, esboço, acessibilidade e aviso de direitos |
+| 1 — quatro cartões grandes | `#home` | **Banner grande com vários Pokémon reunidos** e 4 cartões 2 × 2: Pokédex, Pokémon do dia, Favoritos e Sobre |
+| 2 — grade de ícones (3 × 4) | `#pokedex` | 12 Pokémon por página; filtros recolhíveis (nome/número, tipo, região, favoritos) e paginação |
+| 3 — imagem + texto + 3 ícones | `#pokemon/25` | Imagem grande, tipos, descrição, medidas e fileira de ícones da evolução; abaixo: atributos, fraquezas, habilidades e dados da espécie |
+| — | `#sobre` | Autor, APIs, esboço, acessibilidade e aviso de direitos |
 
-São **4 páginas**. Os links antigos `#tipos` e `#favoritos` levam à Pokédex já filtrada, e `#aleatorio` sorteia um Pokémon.
+São **4 páginas**. `#tipos` e `#favoritos` levam à Pokédex já filtrada e `#aleatorio` sorteia um Pokémon.
 
 ## Inspiração
 
-- **Pottermore**: tipografia com serifa, detalhes dourados, o texto da Pokédex em um "pergaminho" e o conteúdo do dia.
-- **Site de Genshin Impact**: tema escuro, vitrine com o personagem em destaque, cartões com brilho na cor do tipo e barra de tipos como as abas de elementos.
+- **Pottermore**: tipografia com serifa, detalhes dourados e a descrição da Pokédex num "pergaminho".
+- **Site de Genshin Impact**: tema escuro, banner com os personagens em destaque e cartões com brilho na cor do tipo (como os elementos).
 
-## API
+## APIs
 
-Todas as chamadas estão em [`js/api.js`](js/api.js), com cache em memória:
+Todas as chamadas à PokéAPI ficam em [`js/api.js`](js/api.js), com cache em memória:
 
 | Endpoint | Uso |
 | --- | --- |
-| `/pokemon?limit=100000` | Lista de espécies (busca e paginação) |
-| `/pokemon/{id}` | Tipos, atributos, habilidades e imagens |
-| `/pokemon-species/{id}` | Texto da Pokédex, categoria e cadeia de evolução |
-| `/evolution-chain/{id}` | Linha evolutiva |
-| `/type` e `/type/{nome}` | Tipos e os Pokémon de cada um |
+| `/pokemon` | Lista de espécies; tipos, atributos, habilidades e imagens |
+| `/pokemon-species` | Descrição, região, habitat, cor, gênero, captura e cadeia de evolução |
+| `/evolution-chain` | Linha evolutiva |
+| `/type` | Tipos, Pokémon de cada tipo e **tabela de fraquezas** (relações de dano combinadas) |
+| `/generation` | Pokémon de cada região (filtro da Pokédex) |
+| `/ability` | Descrição das habilidades |
 
-Os dados da API entram na página sempre como texto (nunca `innerHTML`). Falhas de rede mostram uma
-mensagem com o botão "Tentar novamente".
+**Português:** a PokéAPI não traz textos em português. Por isso:
+
+- tipos, atributos, regiões, habitats, cores, grupos de ovos e crescimento têm tabelas próprias em [`js/ui.js`](js/ui.js);
+- as descrições (Pokédex e habilidades) são traduzidas pela **segunda API**, a [MyMemory](https://mymemory.translated.net/), em [`js/traducao.js`](js/traducao.js). O resultado fica guardado no navegador e, se a tradução falhar, o texto aparece em inglês com um aviso. É tradução automática e pode errar;
+- nomes de Pokémon e de habilidades ficam como na API.
+
+Os dados entram na página sempre como texto (nunca `innerHTML`). Falhas de rede mostram uma mensagem com o botão "Tentar novamente".
 
 ## Acessibilidade
 
@@ -61,12 +69,18 @@ python3 -m http.server 8080
 ## Estrutura
 
 ```
-index.html          estrutura, cabeçalho, navegação e rodapé com aviso de direitos
+index.html          estrutura, cabeçalho, navegação e rodapé (com comentários)
 style.css           tema
 app.js              roteador por hash
+js/config.js        nome do site e do autor
 js/api.js           cliente da PokéAPI
-js/ui.js            helpers de DOM, tipos em português e favoritos
+js/traducao.js      tradução automática (MyMemory)
+js/ui.js            helpers de DOM, tabelas em português e favoritos
 js/pages/*.js       uma página por arquivo (home, pokedex, detalhe, sobre)
 assets/             logo e favicon (originais)
-docs/               esboço do projeto
+docs/               esboço do projeto e guia de Git
 ```
+
+## Git
+
+Veja [`docs/GUIA-GIT.md`](docs/GUIA-GIT.md): como dar **commit**, **merge** (Pull Request) e **fork** neste repositório.
