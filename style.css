@@ -1,22 +1,21 @@
-/* Atlas Pokémon — tema escuro com detalhes dourados e pergaminho.
-   Inspirado na elegância do Pottermore e nas vitrines de personagens do site de Genshin Impact. */
+/* Atlas Pokémon — tema vermelho e preto, com fundo externo vermelho e azul-claro. */
 
 :root {
-    --bg: #0c0e22;
-    --bg-2: #151839;
-    --panel: #1a1e45;
-    --text: #f0eefb;
-    --muted: #b9b7d6;
-    --gold: #e8c26a;
-    --gold-dark: #b98b34;
-    --line: rgb(232 194 106 / 30%);
+    --bg: #080808;
+    --bg-2: #1b1111;
+    --panel: #171212;
+    --text: #f5f5f5;
+    --muted: #c5c5c5;
+    --gold: #ff4b4b;
+    --gold-dark: #c62828;
+    --line: rgb(255 75 75 / 35%);
     --parchment: #f4e8c8;
     --ink: #2b2118;
-    --tc: #e8c26a; /* cor de destaque do cartão (tipo do Pokémon) */
+    --tc: #ff4b4b; /* cor de destaque do cartão (tipo do Pokémon) */
     --font-title: "Cinzel", Georgia, "Times New Roman", serif;
     font-family: "Nunito", "Segoe UI", system-ui, sans-serif;
     color: var(--text);
-    background: var(--bg);
+    background: #080808;
     color-scheme: dark;
     text-rendering: optimizeLegibility;
 }
@@ -38,7 +37,7 @@ img { max-width: 100%; height: auto; }
 a { color: var(--gold); }
 
 /* Acessibilidade: foco bem visível e texto só para leitores de tela. */
-:focus-visible { outline: 3px solid #ffd86b; outline-offset: 3px; border-radius: 6px; }
+:focus-visible { outline: 3px solid #ff7373; outline-offset: 3px; border-radius: 6px; }
 [tabindex="-1"]:focus { outline: none; }
 
 .sr-only {
@@ -61,7 +60,7 @@ a { color: var(--gold); }
     padding: 10px 16px;
     border-radius: 0 0 10px 10px;
     background: var(--gold);
-    color: #1b1530;
+    color: #111;
     font-weight: 800;
     text-decoration: none;
 }
@@ -79,7 +78,7 @@ a { color: var(--gold); }
     gap: 8px 24px;
     padding: 10px clamp(16px, 4vw, 40px);
     border-bottom: 1px solid var(--line);
-    background: rgb(12 14 34 / 88%);
+    background: rgb(8 8 8 / 92%);
     backdrop-filter: blur(12px);
 }
 
@@ -91,6 +90,8 @@ a { color: var(--gold); }
     text-decoration: none;
 }
 .brand img { display: block; }
+.brand-icon { width: 44px; height: 44px; flex: 0 0 auto; }
+.brand-icon img { width: 100%; height: 100%; }
 .brand-text { display: grid; line-height: 1.2; }
 .brand-name { color: var(--gold); font-family: var(--font-title); font-size: 21px; font-weight: 700; letter-spacing: 0.04em; }
 .brand-tag { color: var(--muted); font-size: 12px; }
@@ -117,7 +118,7 @@ main { flex: 1; width: min(100%, 1080px); margin: 0 auto; padding: 32px 20px 72p
 .page {
     padding: clamp(18px, 3vw, 32px);
     border-radius: 22px;
-    background: rgb(12 14 34 / 92%);
+    background: rgb(8 8 8 / 94%);
     animation: page-enter 280ms ease both;
 }
 
@@ -152,17 +153,17 @@ p { margin: 0 0 14px; }
     border: 2px solid var(--gold);
     border-radius: 999px;
     background: var(--gold);
-    color: #1b1530;
+    color: #111;
     font: inherit;
     font-weight: 800;
     text-decoration: none;
     cursor: pointer;
     transition: transform 160ms ease, background-color 160ms ease;
 }
-.btn:hover { background: #f5d98f; transform: translateY(-1px); }
+.btn:hover { background: #ff7373; transform: translateY(-1px); }
 .btn-ghost, button.btn-ghost { background: transparent; color: var(--gold); }
-.btn-ghost:hover { background: rgb(232 194 106 / 14%); }
-.btn[aria-pressed="true"] { background: #ffd86b; border-color: #ffd86b; }
+.btn-ghost:hover { background: rgb(255 75 75 / 14%); }
+.btn[aria-pressed="true"] { background: #ff7373; border-color: #ff7373; }
 .btn[aria-disabled="true"] { opacity: 0.45; pointer-events: none; }
 
 input, select {
@@ -170,11 +171,11 @@ input, select {
     padding: 0 16px;
     border: 1px solid var(--line);
     border-radius: 12px;
-    background: #0f1230;
+    background: #171111;
     color: var(--text);
     font: inherit;
 }
-input::placeholder { color: #9a98bd; }
+input::placeholder { color: #aaa; }
 label { color: var(--muted); font-size: 14px; font-weight: 700; }
 
 /* Início: banner grande com os Pokémon reunidos (como numa foto de grupo) */
@@ -185,10 +186,10 @@ label { color: var(--muted); font-size: 14px; font-weight: 700; }
     border: 1px solid var(--line);
     border-radius: 28px;
     background:
-        radial-gradient(ellipse at 50% 105%, rgb(232 194 106 / 32%), transparent 60%),
-        radial-gradient(ellipse at 15% 0%, rgb(99 102 241 / 45%), transparent 55%),
-        radial-gradient(ellipse at 90% 10%, rgb(168 85 247 / 28%), transparent 50%),
-        linear-gradient(180deg, #1a1e45, #0c0e22);
+        radial-gradient(ellipse at 50% 105%, rgb(255 75 75 / 28%), transparent 60%),
+        radial-gradient(ellipse at 15% 0%, rgb(170 30 30 / 42%), transparent 55%),
+        radial-gradient(ellipse at 90% 10%, rgb(0 0 0 / 35%), transparent 50%),
+        linear-gradient(180deg, #211313, #080808);
     box-shadow: 0 30px 70px rgb(0 0 0 / 50%);
 }
 .banner-text { position: relative; z-index: 10; padding: 40px 24px 0; text-align: center; }
@@ -196,6 +197,26 @@ label { color: var(--muted); font-size: 14px; font-weight: 700; }
 .banner .lead { margin-inline: auto; }
 .home-author { margin: 18px 0 0; color: var(--text); font-weight: 700; }
 .home-author a { white-space: nowrap; }
+.home-title { display: flex; align-items: center; justify-content: center; gap: 12px; }
+.home-title img { width: clamp(36px, 7vw, 64px); height: auto; }
+.home-search { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; max-width: 560px; margin: 22px auto 0; }
+.home-search input { flex: 1 1 220px; min-width: 0; }
+.home-search .search-icon { width: 19px; height: 19px; vertical-align: middle; }
+.interactive-showcase { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; margin: 20px auto 0; max-width: 620px; }
+.showcase-card { display: grid; justify-items: center; align-content: center; gap: 8px; min-height: 150px; padding: 16px; border: 1px solid var(--line); border-radius: 18px; background: rgb(0 0 0 / 45%); text-align: center; }
+.showcase-card p { margin: 0; color: var(--muted); font-size: 14px; }
+.showcase-pokemon { width: 100px; height: 100px; object-fit: contain; animation: float 2.4s ease-in-out infinite; }
+.showcase-pokemon.is-paused { animation-play-state: paused; }
+.pokeball-toggle { width: 68px; height: 68px; padding: 4px; border: 0; border-radius: 50%; background: transparent; cursor: pointer; }
+.pokeball-toggle img { display: block; width: 100%; height: 100%; }
+.pokeball-toggle.is-spinning img { animation: pokeball-spin 900ms ease-in-out; }
+@keyframes pokeball-spin { 50% { transform: rotate(180deg) scale(1.12); } }
+.github-card { justify-items: stretch; text-align: left; }
+.github-profile { display: flex; align-items: center; gap: 12px; }
+.github-avatar { width: 56px; height: 56px; border: 2px solid var(--gold); border-radius: 50%; }
+.github-profile p { margin: 0; }
+.github-stats { color: var(--muted); font-size: 14px; }
+.github-error { color: #ff9b9b; }
 .banner-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 8px; }
 
 /* A montagem: cada imagem usa variáveis (--x, --y, --s, --z, --d) definidas pelo JavaScript. */
@@ -234,8 +255,8 @@ label { color: var(--muted); font-size: 14px; font-weight: 700; }
     border: 1px solid var(--line);
     border-radius: 22px;
     background:
-        radial-gradient(circle at 50% 36%, color-mix(in srgb, var(--tc) 38%, transparent), transparent 62%),
-        linear-gradient(180deg, var(--panel), var(--bg-2));
+        radial-gradient(circle at 50% 36%, color-mix(in srgb, var(--tc) 30%, transparent), transparent 62%),
+        linear-gradient(180deg, #211414, #100b0b);
     color: var(--text);
     text-align: center;
     text-decoration: none;
@@ -249,7 +270,7 @@ label { color: var(--muted); font-size: 14px; font-weight: 700; }
 .feature-card:hover img { transform: scale(1.06) translateY(-4px); }
 
 /* Pokédex: grade 3 colunas × 4 linhas (esboço). Os filtros ficam num bloco recolhível. */
-.filtros { margin: 8px 0 4px; border: 1px solid var(--line); border-radius: 16px; background: rgb(26 30 69 / 60%); }
+.filtros { margin: 8px 0 4px; border: 1px solid var(--line); border-radius: 16px; background: rgb(20 10 10 / 80%); }
 .filtros summary { padding: 12px 18px; color: var(--gold); font-weight: 800; cursor: pointer; }
 .filters { display: flex; flex-wrap: wrap; align-items: end; gap: 12px 16px; padding: 4px 18px 18px; }
 .filters div { display: grid; gap: 4px; }
@@ -313,7 +334,7 @@ a.type-chip:hover { filter: brightness(1.1); }
     border-radius: 24px;
     background:
         radial-gradient(circle at 50% 42%, color-mix(in srgb, var(--tc) 45%, transparent), transparent 66%),
-        linear-gradient(180deg, var(--panel), var(--bg-2));
+        linear-gradient(180deg, #211414, #100b0b);
 }
 .detail-art img { width: min(100%, 420px); aspect-ratio: 1; object-fit: contain; filter: drop-shadow(0 16px 22px rgb(0 0 0 / 50%)); }
 .detail-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
@@ -382,7 +403,7 @@ a.type-chip:hover { filter: brightness(1.1); }
 code { padding: 1px 6px; border-radius: 6px; background: rgb(255 255 255 / 10%); font-size: 0.92em; }
 
 /* Rodapé com aviso de direitos */
-.site-footer { padding: 28px clamp(16px, 4vw, 40px) 36px; border-top: 1px solid var(--line); background: rgb(8 9 24 / 85%); color: var(--muted); font-size: 14px; text-align: center; }
+.site-footer { padding: 28px clamp(16px, 4vw, 40px) 36px; border-top: 1px solid var(--line); background: rgb(0 0 0 / 92%); color: var(--muted); font-size: 14px; text-align: center; }
 .site-footer p { max-width: 80ch; margin: 0 auto 8px; }
 .site-footer .autoria { color: var(--text); font-weight: 700; }
 .site-footer .credit-notice { margin-top: 16px; color: var(--text); font-weight: 800; }
@@ -398,6 +419,7 @@ code { padding: 1px 6px; border-radius: 6px; background: rgb(255 255 255 / 10%);
     .banner-art { aspect-ratio: 1 / 0.72; }
     .banner-art img { width: calc(var(--s) * 1.7); }
     .banner-art img.opcional { display: none; }
+    .interactive-showcase { grid-template-columns: 1fr; }
     .feature-grid { grid-template-columns: 1fr; }
     .site-header { justify-content: center; }
     .site-header nav a { padding: 8px 10px; font-size: 13px; }
