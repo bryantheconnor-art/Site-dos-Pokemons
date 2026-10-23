@@ -48,7 +48,7 @@ Pages.home = (ctx) => {
             h('p', { class: 'eyebrow' }, 'Enciclopédia interativa'),
             h('h1', { id: 'titulo-inicio', class: 'home-title', tabindex: -1 },
                 h('img', { src: 'assets/pokebola.svg', alt: '', 'aria-hidden': 'true', width: 64, height: 64 }),
-                'Atlas Pokémon'),
+                SITE.nome),
             h('div', { class: 'ornament', 'aria-hidden': 'true' }, h('span')),
             h('p', { class: 'lead' }, 'Conheça criaturas, tipos e linhas evolutivas com dados ao vivo da PokéAPI, tudo em português.'),
             h('p', { class: 'home-author' },
@@ -204,7 +204,7 @@ Pages.home = (ctx) => {
         cartao({ href: '#pokedex', id: 25, nome: 'Pikachu', titulo: 'Pokédex', texto: 'Todas as espécies, com busca por nome ou número e filtros por tipo e região.', cor: typeColor('electric') }),
         h('li', {}, linkDoDia),
         cartao({ href: '#pokedex?favoritos=1', id: 133, nome: 'Eevee', titulo: 'Favoritos', texto: 'Guarde seus preferidos neste navegador e volte a eles quando quiser.', cor: typeColor('normal') }),
-        cartao({ href: '#sobre', id: 479, nome: 'Rotom', titulo: 'Sobre o Atlas', texto: 'Conheça o projeto, as APIs por trás dele, o autor e o esboço que o originou.', cor: typeColor('ghost') }))
+        cartao({ href: '#sobre', id: 479, nome: 'Rotom', titulo: `Sobre a ${SITE.nome}`, texto: 'Conheça o projeto, as APIs por trás dele, o autor e o esboço que o originou.', cor: typeColor('ghost') }))
 
     return {
         title: SITE.nome,

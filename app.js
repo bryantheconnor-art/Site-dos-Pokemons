@@ -57,7 +57,7 @@ Pages.notFound = () => {
         title: 'Página não encontrada',
         node: h('article', { class: 'page' },
             h('h1', { tabindex: -1 }, 'Página não encontrada'),
-            h('p', { class: 'lead' }, 'Esse caminho não existe no Atlas.'),
+            h('p', { class: 'lead' }, `Esse caminho não existe na ${SITE.nome}.`),
             h('a', { class: 'btn', href: '#home' }, 'Voltar ao início'))
     }
 }

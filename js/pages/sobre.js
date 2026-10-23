@@ -18,7 +18,7 @@ Pages.sobre = () => {
     return {
         title: 'Sobre',
         node: h('article', { class: 'page prose' },
-            h('h1', { tabindex: -1 }, 'Sobre o Atlas'),
+            h('h1', { tabindex: -1 }, `Sobre a ${SITE.nome}`),
             h('p', { class: 'lead' }, 'Um projeto educacional que consome APIs públicas para mostrar como uma página dinâmica busca, organiza e traduz dados em tempo real.'),
 
             // Autoria

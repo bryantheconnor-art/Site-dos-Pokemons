@@ -1,4 +1,4 @@
-# Atlas Pokémon
+# Biblioteca Pokemon
 
 Enciclopédia interativa de Pokémon, **em português**, que consome a [PokéAPI](https://pokeapi.co/) em tempo real.
 Feita com HTML, CSS e JavaScript puros (sem frameworks), sobre o projeto base das aulas.

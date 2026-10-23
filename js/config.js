@@ -9,7 +9,7 @@
    (e o texto do rodapé no index.html).
    ============================================================ */
 const SITE = {
-    nome: 'Atlas Pokémon',
+    nome: 'Biblioteca Pokemon',
     autor: 'bryantheconnor-art',
     autorUrl: 'https://github.com/bryantheconnor-art',
     repositorioUrl: 'https://github.com/bryantheconnor-art/Site-dos-Pokemons',
