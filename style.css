@@ -31,12 +31,7 @@ body {
     display: flex;
     flex-direction: column;
     line-height: 1.6;
-    background:
-        radial-gradient(60rem 40rem at 15% -10%, rgb(99 102 241 / 28%), transparent 60%),
-        radial-gradient(50rem 36rem at 100% 10%, rgb(232 194 106 / 12%), transparent 60%),
-        radial-gradient(circle at 20% 30%, rgb(255 255 255 / 55%) 0 1px, transparent 1.5px) 0 0 / 180px 180px,
-        radial-gradient(circle at 70% 60%, rgb(255 255 255 / 35%) 0 1px, transparent 1.5px) 0 0 / 130px 130px,
-        var(--bg);
+    background: linear-gradient(120deg, #c93445 0 50%, #87ceeb 50% 100%) fixed;
 }
 
 img { max-width: 100%; height: auto; }
@@ -119,7 +114,12 @@ a { color: var(--gold); }
 
 /* Conteúdo principal */
 main { flex: 1; width: min(100%, 1080px); margin: 0 auto; padding: 32px 20px 72px; }
-.page { animation: page-enter 280ms ease both; }
+.page {
+    padding: clamp(18px, 3vw, 32px);
+    border-radius: 22px;
+    background: rgb(12 14 34 / 92%);
+    animation: page-enter 280ms ease both;
+}
 
 @keyframes page-enter {
     from { opacity: 0; transform: translateY(10px); }
@@ -194,6 +194,8 @@ label { color: var(--muted); font-size: 14px; font-weight: 700; }
 .banner-text { position: relative; z-index: 10; padding: 40px 24px 0; text-align: center; }
 .banner h1 { font-size: clamp(40px, 8vw, 84px); }
 .banner .lead { margin-inline: auto; }
+.home-author { margin: 18px 0 0; color: var(--text); font-weight: 700; }
+.home-author a { white-space: nowrap; }
 .banner-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 8px; }
 
 /* A montagem: cada imagem usa variáveis (--x, --y, --s, --z, --d) definidas pelo JavaScript. */
@@ -383,6 +385,8 @@ code { padding: 1px 6px; border-radius: 6px; background: rgb(255 255 255 / 10%);
 .site-footer { padding: 28px clamp(16px, 4vw, 40px) 36px; border-top: 1px solid var(--line); background: rgb(8 9 24 / 85%); color: var(--muted); font-size: 14px; text-align: center; }
 .site-footer p { max-width: 80ch; margin: 0 auto 8px; }
 .site-footer .autoria { color: var(--text); font-weight: 700; }
+.site-footer .credit-notice { margin-top: 16px; color: var(--text); font-weight: 800; }
+.site-footer .nonprofit-notice { color: var(--gold); font-family: var(--font-title); font-size: 16px; font-weight: 700; }
 
 @media (max-width: 760px) {
     .detail-grid, .detail-more { grid-template-columns: 1fr; }
