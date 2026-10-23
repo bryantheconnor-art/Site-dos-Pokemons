@@ -16,7 +16,7 @@ O layout segue o rascunho de três telas em [`docs/esboco-wireframe.png`](docs/e
 
 | Tela do esboço | Página | O que mostra |
 | --- | --- | --- |
-| 1 — quatro cartões grandes | `#home` | **Banner grande com vários Pokémon reunidos** e 4 cartões 2 × 2: Pokédex, Pokémon do dia, Favoritos e Sobre |
+| 1 — quatro cartões grandes | `#home` | **Banner grande com vários Pokémon reunidos**, autoria e GitHub em destaque, e 4 cartões 2 × 2: Pokédex, Pokémon do dia, Favoritos e Sobre |
 | 2 — grade de ícones (3 × 4) | `#pokedex` | 12 Pokémon por página; filtros recolhíveis (nome/número, tipo, região, favoritos) e paginação |
 | 3 — imagem + texto + 3 ícones | `#pokemon/25` | Imagem grande, tipos, descrição, medidas e fileira de ícones da evolução; abaixo: atributos, fraquezas, habilidades e dados da espécie |
 | — | `#sobre` | Autor, APIs, esboço, acessibilidade e aviso de direitos |
@@ -26,7 +26,8 @@ São **4 páginas**. `#tipos` e `#favoritos` levam à Pokédex já filtrada e `#
 ## Inspiração
 
 - **Pottermore**: tipografia com serifa, detalhes dourados e a descrição da Pokédex num "pergaminho".
-- **Site de Genshin Impact**: tema escuro, banner com os personagens em destaque e cartões com brilho na cor do tipo (como os elementos).
+- **Site de Genshin Impact**: banner com os personagens em destaque e cartões com brilho na cor do tipo (como os elementos).
+- **Identidade visual**: fundo vermelho e azul-claro, com painéis escuros para manter o contraste e a leitura.
 
 ## APIs
 
