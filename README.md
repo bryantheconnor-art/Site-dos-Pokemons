@@ -42,6 +42,8 @@ Todas as chamadas à PokéAPI ficam em [`js/api.js`](js/api.js), com cache em me
 | `/generation` | Pokémon de cada região (filtro da Pokédex) |
 | `/ability` | Descrição das habilidades |
 
+Além da PokéAPI, a página usa a **MyMemory Translation API** para traduzir descrições e a **GitHub REST API** para apresentar os dados públicos do perfil do autor. As três estão destacadas também na página inicial.
+
 **Português:** a PokéAPI não traz textos em português. Por isso:
 
 - tipos, atributos, regiões, habitats, cores, grupos de ovos e crescimento têm tabelas próprias em [`js/ui.js`](js/ui.js);

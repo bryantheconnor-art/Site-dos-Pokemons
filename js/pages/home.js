@@ -156,6 +156,19 @@ Pages.home = (ctx) => {
             botaoPokebola,
             h('p', {}, 'Clique na Pokébola para girar')))
 
+    const apis = h('section', { class: 'api-highlights', 'aria-labelledby': 'apis-utilizadas' },
+        h('h2', { id: 'apis-utilizadas' }, 'APIs utilizadas'),
+        h('ul', {},
+            h('li', {},
+                h('a', { href: 'https://pokeapi.co/', target: '_blank', rel: 'noopener noreferrer' }, 'PokéAPI'),
+                h('p', {}, 'Dados, espécies, tipos, evoluções e imagens de Pokémon.')),
+            h('li', {},
+                h('a', { href: 'https://mymemory.translated.net/', target: '_blank', rel: 'noopener noreferrer' }, 'MyMemory Translation API'),
+                h('p', {}, 'Tradução automática das descrições para português.')),
+            h('li', {},
+                h('a', { href: 'https://docs.github.com/en/rest/users/users', target: '_blank', rel: 'noopener noreferrer' }, 'GitHub REST API'),
+                h('p', {}, 'Carrega os dados públicos do perfil do autor.'))))
+
     // 2) Cartões 2 × 2. Cada cartão tem uma "área da arte" com altura fixa para a página não pular quando a imagem chega.
     function cartao({ href, id, nome, titulo, texto, cor }) {
         return h('li', {},
@@ -211,6 +224,7 @@ Pages.home = (ctx) => {
         node: h('article', { class: 'page' },
             banner,
             destaques,
+            apis,
             h('section', { 'aria-labelledby': 'por-onde-comecar' },
                 h('h2', { id: 'por-onde-comecar' }, 'Por onde começar?'),
                 grade))

@@ -217,6 +217,12 @@ label { color: var(--muted); font-size: 14px; font-weight: 700; }
 .github-profile p { margin: 0; }
 .github-stats { color: var(--muted); font-size: 14px; }
 .github-error { color: #ff9b9b; }
+.api-highlights { margin: 34px 0; }
+.api-highlights h2 { margin-top: 0; text-align: center; }
+.api-highlights ul { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin: 0; padding: 0; list-style: none; }
+.api-highlights li { padding: 18px; border: 1px solid var(--line); border-top: 4px solid var(--gold); border-radius: 14px; background: linear-gradient(150deg, #211414, #100b0b); }
+.api-highlights a { font-family: var(--font-title); font-size: 17px; font-weight: 700; }
+.api-highlights p { margin: 8px 0 0; color: var(--muted); font-size: 14px; }
 .banner-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 8px; }
 
 /* A montagem: cada imagem usa variáveis (--x, --y, --s, --z, --d) definidas pelo JavaScript. */
@@ -420,6 +426,7 @@ code { padding: 1px 6px; border-radius: 6px; background: rgb(255 255 255 / 10%);
     .banner-art img { width: calc(var(--s) * 1.7); }
     .banner-art img.opcional { display: none; }
     .interactive-showcase { grid-template-columns: 1fr; }
+    .api-highlights ul { grid-template-columns: 1fr; }
     .feature-grid { grid-template-columns: 1fr; }
     .site-header { justify-content: center; }
     .site-header nav a { padding: 8px 10px; font-size: 13px; }

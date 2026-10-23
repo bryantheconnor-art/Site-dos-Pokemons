@@ -48,6 +48,9 @@ Pages.sobre = () => {
             h('p', {}, 'Como a PokéAPI não tem textos em português, as descrições passam por uma segunda API, a ',
                 externo('MyMemory', 'https://mymemory.translated.net/'),
                 ', que faz a tradução automática. Ela pode errar, e os nomes de habilidades ficam no original. Se a tradução não estiver disponível, o texto aparece em inglês com um aviso.'),
+            h('p', {}, 'A página inicial também consulta a ',
+                externo('API REST pública do GitHub', 'https://docs.github.com/en/rest/users/users'),
+                ' para exibir os dados públicos do perfil do autor.'),
             h('p', {}, 'Os favoritos ficam salvos apenas no seu navegador.'),
 
             // Esboço
