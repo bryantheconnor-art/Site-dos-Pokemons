@@ -46,7 +46,9 @@ Pages.home = (ctx) => {
     const banner = h('section', { class: 'banner', 'aria-labelledby': 'titulo-inicio' },
         h('div', { class: 'banner-text' },
             h('p', { class: 'eyebrow' }, 'Enciclopédia interativa'),
-            h('h1', { id: 'titulo-inicio', tabindex: -1 }, 'Atlas Pokémon'),
+            h('h1', { id: 'titulo-inicio', class: 'home-title', tabindex: -1 },
+                h('img', { src: 'assets/pokebola.svg', alt: '', 'aria-hidden': 'true', width: 64, height: 64 }),
+                'Atlas Pokémon'),
             h('div', { class: 'ornament', 'aria-hidden': 'true' }, h('span')),
             h('p', { class: 'lead' }, 'Conheça criaturas, tipos e linhas evolutivas com dados ao vivo da PokéAPI, tudo em português.'),
             h('p', { class: 'home-author' },
@@ -54,10 +56,105 @@ Pages.home = (ctx) => {
                 h('a', { href: SITE.autorUrl, target: '_blank', rel: 'noopener noreferrer' }, SITE.autor),
                 ' · ',
                 h('a', { href: SITE.autorUrl, target: '_blank', rel: 'noopener noreferrer' }, 'Meu GitHub')),
+            h('form', {
+                class: 'home-search',
+                role: 'search',
+                onsubmit: (evento) => {
+                    evento.preventDefault()
+                    const termo = new FormData(evento.currentTarget).get('busca').trim()
+                    if (termo) window.location.hash = `#pokedex?busca=${encodeURIComponent(termo)}`
+                }
+            },
+                h('label', { class: 'sr-only', for: 'busca-inicio' }, 'Buscar Pokémon por nome ou número'),
+                h('input', { id: 'busca-inicio', name: 'busca', type: 'search', placeholder: 'Buscar Pokémon por nome ou número', autocomplete: 'off', required: true }),
+                h('button', { class: 'btn', type: 'submit' },
+                    h('img', { class: 'search-icon', src: 'assets/pokebola.svg', alt: '', 'aria-hidden': 'true', width: 19, height: 19 }),
+                    'Buscar')),
             h('div', { class: 'banner-actions' },
                 h('a', { class: 'btn', href: '#pokedex' }, 'Explorar a Pokédex'),
                 h('a', { class: 'btn btn-ghost', href: '#aleatorio' }, 'Pokémon aleatório'))),
         h('div', { class: 'banner-art', role: 'img', 'aria-label': descricaoMontagem }, imagens))
+
+    const imagemDestaque = h('img', {
+        class: 'showcase-pokemon',
+        src: PokeAPI.artwork(25),
+        alt: 'Pikachu em destaque',
+        width: 100,
+        height: 100
+    })
+    const botaoAnimacao = h('button', {
+        class: 'btn btn-ghost',
+        type: 'button',
+        'aria-pressed': 'false',
+        onclick: (evento) => {
+            const pausado = imagemDestaque.classList.toggle('is-paused')
+            evento.currentTarget.textContent = pausado ? 'Retomar animação' : 'Pausar animação'
+            evento.currentTarget.setAttribute('aria-pressed', String(pausado))
+        }
+    }, 'Pausar animação')
+
+    const botaoPokebola = h('button', {
+        class: 'pokeball-toggle',
+        type: 'button',
+        'aria-label': 'Girar a Pokébola',
+        'aria-pressed': 'false',
+        onclick: (evento) => {
+            const botao = evento.currentTarget
+            botao.classList.remove('is-spinning')
+            void botao.offsetWidth
+            botao.classList.add('is-spinning')
+            botao.setAttribute('aria-pressed', 'true')
+        },
+        onanimationend: (evento) => {
+            if (evento.animationName === 'pokeball-spin') {
+                evento.currentTarget.classList.remove('is-spinning')
+                evento.currentTarget.setAttribute('aria-pressed', 'false')
+            }
+        }
+    },
+        h('img', { src: 'assets/pokebola.svg', alt: '', 'aria-hidden': 'true', width: 60, height: 60 }),
+        h('span', { class: 'sr-only' }, 'Girar a Pokébola'))
+
+    const perfilGitHub = h('div', { class: 'github-profile', role: 'status', 'aria-live': 'polite' },
+        h('p', {}, 'Carregando perfil do GitHub…'))
+    const cartaoGitHub = h('section', { class: 'showcase-card github-card', 'aria-label': 'Perfil do GitHub' },
+        h('h3', {}, 'Meu GitHub'),
+        perfilGitHub)
+
+    async function carregarPerfilGitHub() {
+        try {
+            const resposta = await fetch(`https://api.github.com/users/${encodeURIComponent(SITE.autor)}`, {
+                headers: { Accept: 'application/vnd.github+json' }
+            })
+            if (!resposta.ok) throw new Error(`GitHub API respondeu com HTTP ${resposta.status}`)
+            const perfil = await resposta.json()
+            if (!perfil || typeof perfil.login !== 'string' || typeof perfil.avatar_url !== 'string') {
+                throw new Error('A resposta do perfil do GitHub está incompleta.')
+            }
+            perfilGitHub.replaceChildren(
+                h('img', { class: 'github-avatar', src: perfil.avatar_url, alt: `Avatar de ${perfil.login}`, width: 56, height: 56 }),
+                h('div', {},
+                    h('p', {}, perfil.name || perfil.login),
+                    h('a', { href: SITE.autorUrl, target: '_blank', rel: 'noopener noreferrer' }, `@${perfil.login}`),
+                    h('p', { class: 'github-stats' }, `${perfil.public_repos} repositórios · ${perfil.followers} ${perfil.followers === 1 ? 'seguidor' : 'seguidores'}`)))
+        } catch (erro) {
+            console.error('Não foi possível carregar o perfil do GitHub.', erro)
+            perfilGitHub.replaceChildren(
+                h('p', { class: 'github-error' }, 'Não foi possível carregar os dados do GitHub agora.'),
+                h('button', { class: 'btn btn-ghost', type: 'button', onclick: carregarPerfilGitHub }, 'Tentar novamente'))
+        }
+    }
+    carregarPerfilGitHub()
+
+    const destaques = h('div', { class: 'interactive-showcase' },
+        h('section', { class: 'showcase-card', 'aria-label': 'Pokémon animado' },
+            imagemDestaque,
+            h('p', {}, 'Pikachu em destaque'),
+            botaoAnimacao),
+        cartaoGitHub,
+        h('section', { class: 'showcase-card', 'aria-label': 'Pokébola interativa' },
+            botaoPokebola,
+            h('p', {}, 'Clique na Pokébola para girar')))
 
     // 2) Cartões 2 × 2. Cada cartão tem uma "área da arte" com altura fixa para a página não pular quando a imagem chega.
     function cartao({ href, id, nome, titulo, texto, cor }) {
@@ -113,6 +210,7 @@ Pages.home = (ctx) => {
         title: SITE.nome,
         node: h('article', { class: 'page' },
             banner,
+            destaques,
             h('section', { 'aria-labelledby': 'por-onde-comecar' },
                 h('h2', { id: 'por-onde-comecar' }, 'Por onde começar?'),
                 grade))
