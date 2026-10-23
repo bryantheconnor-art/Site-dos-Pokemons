@@ -72,6 +72,6 @@ Pages.sobre = () => {
             // Direitos
             h('h2', {}, 'Direitos e créditos'),
             h('p', {}, 'Pokémon e os nomes dos personagens são marcas registradas da Nintendo, Creatures Inc. e GAME FREAK inc. © Nintendo. Todos os direitos reservados.'),
-            h('p', {}, 'Este é um projeto de fã, sem fins lucrativos e sem vínculo oficial com a Nintendo. Dados e imagens vêm da PokéAPI e pertencem aos seus respectivos titulares.'))
+            h('p', {}, 'Este é um trabalho educacional de fã, sem fins lucrativos e sem vínculo oficial ou licença da Nintendo. As imagens e personagens pertencem aos respectivos titulares; este projeto não reivindica direitos de uso. Os dados e imagens são acessados pela PokéAPI.'))
     }
 }
